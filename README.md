@@ -72,6 +72,7 @@ Here are some changes that we made to meet the requirements of Yii2 Framework :
 
 ## Installing Yii2 from workspace container
 I assume you have already installed docker and run it.
+
 1. Download this repo and put it under the folder called yourproject-environment ( You can use your project name or whatever)
 
     ```
