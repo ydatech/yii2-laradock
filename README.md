@@ -3,7 +3,7 @@ Yii2 Laradock is a Docker PHP development environment base on [Laradock](https:/
 To fullfill the requirements of Yii2, we need to make some modifications to php-fpm and workspace containers.
 By using this project, you can easily install and run Yii2 Framework from a Docker Container.
 
-Here are some changes that we made to fullfill the requirements of Yii2 Framework :
+Here are some changes that we made to meet the requirements of Yii2 Framework :
 
 ## docker-compose.yml
 - New argument has been added to docker-compose.yml for php-fpm container called INSTALL_INTL. We will use this argument
