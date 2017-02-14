@@ -6,18 +6,145 @@ By using this project, you can easily install and run Yii2 Framework from a Dock
 Here are some changes that we made to fullfill the requirements of Yii2 Framework :
 
 ## docker-compose.yml
-- We added new argument to docker-compose.yml for php-fpm container called INSTALL_INTL. We will use this argument
+- New argument has been added to docker-compose.yml for php-fpm container called INSTALL_INTL. We will use this argument
   to install PHP Internationalization support on php-fpm container which is required by Yii2 Framework. 
   You have to set this argument value to true.
 
 
 ## php-fpm container
-- We added some code to install php Internationalization support on php-fpm Dockerfile
-- We added new file called yii.ini under the php-fpm folder
-- We added a line of Dockerfile syntax to add yii.ini config to php default config on fphp-fpm Dockerfile
-
+- Install php Internationalization support 
+    ```
+    ##
+    # Install Intl
+    ##
+    ARG INSTALL_INTL=false
+    RUN if [ ${INSTALL_INTL} = true ]; then \
+        apt-get -y update --fix-missing&& \
+        apt-get -y install libicu-dev --fix-missing && \
+        pecl install intl && \
+        docker-php-ext-install intl \
+    ;fi
+    ```
+- I added yii.ini file and copy the code inside it to php default config file
+    ```
+    expose_php=0
+    ```
 ## workspace container
-- We added 
+- There is a new file called auth.json and it will be copied to composer folder. You have to replace the token with yours. You can get one [here]( https://github.com/settings/tokens/new?scopes=repo&description=Composer+on+Laradock).
+    * Dockerfile
+    ```
+    # Add the auth.json
+    COPY ./auth.json /home/laradock/.composer/auth.json
+    ```
+    * auth.json
+    ```
+    {
+        "github-oauth": {
+            "github.com": "replacethiswithyourgithubtoken"
+        }
+    }
+    ```
+-  fxp/composer-asset-plugin has been added to global composer.json. It's required by Yii2 Framework. 
+   Don't forget to set `COMPOSER_GLOBAL_INSTALL=true` on docker-compose.yml.
+    ```
+    {
+        "require": {
+            "fxp/composer-asset-plugin": "^1.2.0"
+        }
+    }
+    ```
+
+- Yii and Codeception aliases have been added to aliases.sh, so we can just type `yii` and `codecept` to run Yii and Codeception commands on a workspace container.
+    ```
+    # Yii and Codeception Aliases
+    alias yii="php yii"
+    alias codecept="./vendor/bin/codecept"
+    ```
+
+## Installing Yii2 from workspace container
+I assume you have already installed docker and run it.
+1. Download this repo and put it under the folder called yourproject-environment ( You can use your project name or whatever)
+    ```
+        - yourproject-environment
+            - yii2-laradock
+    ```
+2. Open your terminal and enter to yii2-laradock folder and type this command
+    ```
+        docker-compose up -d nginx mysql
+    ```
+3. Enter the workspace container by typing this command
+    ```
+        docker-compose exec --user=laradock workspace bash
+    ```
+4. From `/var/www/` on you container, install Yii via composer
+    ```
+        composer create-project --prefer-dist yiisoft/yii2-app-basic yourprojectname
+    ```
+    After that your folder will look like this:
+    ```
+        - yourproject-environment
+            - yii2-laradock
+            - yourprojectname
+    ```
+    You can also install multiple project under `/var/www/`
+    ```
+        - yourproject-environment
+            - yii2-laradock
+            - yourprojectname1
+            - yourprojectname2
+    ```
+
+5. Enter your project folder and try run `yii` or `codecept` from that folder.
+6. Type `exit` to exit the continer.
+7. Edit the docker-compose.yml and add your project folder to Applications Code Container section.
+    ```
+        ### Applications Code Container #############################
+
+    applications:
+        image: tianon/true
+        volumes:
+            - ../yourprojectname1/:/var/www/yourprojectname1
+            - ../yourprojectname2/:/var/www/yourprojectname2
+    ```
+8. Go to `nginx/sites` and copy `sample.conf.example` to `yourprojectname1.conf` then to `yourprojectname2.conf`
+
+9. Open the `yourprojectname1.conf` file and edit the `server_name` and the `root` as follow:
+
+```
+    server_name yourprojectname1.dev;
+    root /var/www/yourprojectname1/web;
+```
+Do the same for each project `yourprojectname1.conf`, `yourprojectname2.conf`,...
+
+10. Add the domains to the **hosts** files `sudo nano /etc/hosts`.
+
+```
+127.0.0.1  yourprojectname1.dev
+127.0.0.1  yourprojectname2.dev
+```
+
+11. Edit your database setting (user,password,database name, etc) on the docker-compose.yml
+12. Restart your containers by typing this command:
+    ```
+        docker-compose stop && docker-compose up -d nginx mysql
+    ```
+13. open your browser and navigate to yourprojectname1.dev or yourprojectname2.dev.
+14. Change your database configuration from your yii project.
+    You have to use `mysql` instead of `localhost` for the host of your database.
+    ```
+        <?php
+
+        return [
+            'class' => 'yii\db\Connection',
+            'dsn' => 'mysql:host=mysql;dbname=employeeadvocate',
+            'username' => 'employeeadvocate',
+            'password' => 'Hmft1981',
+            'charset' => 'utf8',
+        ];
+
+    ```
+
+
 
 # Laradock Original README
 

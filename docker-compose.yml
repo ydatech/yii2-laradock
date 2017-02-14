@@ -8,8 +8,6 @@ services:
         image: tianon/true
         volumes:
             - ../:/var/www
-            - ../api/:/var/www/api
-            - ../super-admin-panel/:/var/www/super-admin-panel
 
 ### Workspace Utilities Container ###########################
 
@@ -129,11 +127,11 @@ services:
         build:
             context: ./mysql
             args:
-                - MYSQL_DATABASE=employeeadvocate
-                - MYSQL_USER=employeeadvocate
-                - MYSQL_PASSWORD=Hmft1981
-                - MYSQL_ROOT_PASSWORD=Hmft1981
-                - MYSQL_DB_TEST=employeeadvocate_tests
+                - MYSQL_DATABASE=yii2basic
+                - MYSQL_USER=yii2
+                - MYSQL_PASSWORD=secret
+                - MYSQL_ROOT_PASSWORD=root
+                - MYSQL_DB_TEST=yii2basic_tests
         volumes:
             - mysql:/var/lib/mysql
         ports:
@@ -148,8 +146,8 @@ services:
         ports:
             - "3306:3306"
         environment:
-            MYSQL_DATABASE: homestead
-            MYSQL_USER: homestead
+            MYSQL_DATABASE: yii2basic
+            MYSQL_USER: yii2
             MYSQL_PASSWORD: secret
             MYSQL_ROOT_PASSWORD: root
 
@@ -162,8 +160,8 @@ services:
         ports:
             - "5432:5432"
         environment:
-            POSTGRES_DB: homestead
-            POSTGRES_USER: homestead
+            POSTGRES_DB: yii2basic
+            POSTGRES_USER: yii2
             POSTGRES_PASSWORD: secret
 
 ### PostgreSQL PostGis Container ############################
@@ -175,8 +173,8 @@ services:
         ports:
             - "5432:5432"
         environment:
-            POSTGRES_DB: homestead
-            POSTGRES_USER: homestead
+            POSTGRES_DB: yii2basic
+            POSTGRES_USER: yii2
             POSTGRES_PASSWORD: secret
 
 ### Neo4j Container #########################################
@@ -187,7 +185,7 @@ services:
             - "7474:7474"
             - "1337:1337"
         environment:
-            - NEO4J_AUTH=homestead:secret
+            - NEO4J_AUTH=yii2:secret
         volumes:
             - neo4j:/var/lib/neo4j/data
 
@@ -300,7 +298,7 @@ services:
         build: ./phpmyadmin
         environment:
             PMA_ARBITRARY: 1
-            MYSQL_USER: homestead
+            MYSQL_USER: yii2basic
             MYSQL_PASSWORD: secret
             MYSQL_ROOT_PASSWORD: root
         ports:

@@ -36,8 +36,9 @@ alias migrate="php artisan migrate"
 alias seed="php artisan:seed"
 alias phpunit="./vendor/bin/phpunit"
 
-# Yii Aliases
+# Yii and Codeception Aliases
 alias yii="php yii"
+alias codecept="./vendor/bin/codecept"
 
 # requires installation of 'https://www.npmjs.com/package/npms-cli'
 alias npms="npms search"
