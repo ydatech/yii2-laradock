@@ -27,7 +27,7 @@ Here are some changes that we made to meet the requirements of Yii2 Framework :
     ;fi
     ```
 
-- there is a new file called yii.ini  and  the content will be added  to php default config file
+- There is a new file called yii.ini  and  the content will be added  to php default config file
 
     ```
     expose_php=0
