@@ -106,7 +106,7 @@ I assume you have already installed docker and run it.
             - yourprojectname
     ```
 
-    You can also install multiple project under `/var/www/` :
+    You can also install multiple projects under `/var/www/` :
 
     ```
         - yourproject-environment
