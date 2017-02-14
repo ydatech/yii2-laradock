@@ -6,7 +6,7 @@ By using this project, you can easily install and run Yii2 Framework from a Dock
 Here are some changes that we made to meet the requirements of Yii2 Framework :
 
 ## docker-compose.yml
-- New argument has been added to docker-compose.yml for php-fpm container called INSTALL_INTL. We will use this argument
+- New argument has been added to docker-compose.yml for php-fpm container called **INSTALL_INTL**. We will use this argument
   to install PHP Internationalization support on php-fpm container which is required by Yii2 Framework. 
   You have to set this argument value to true.
 
@@ -155,7 +155,7 @@ Do the same for each project `yourprojectname1.conf`, `yourprojectname2.conf`,..
 13. open your browser and navigate to yourprojectname1.dev or yourprojectname2.dev.
 14. Change your database configuration from your yii project.
     You have to use `mysql` instead of `localhost` for the host of your database.
-    
+
     ```
         <?php
 
