@@ -92,7 +92,7 @@ I assume you have already installed docker and run it.
         docker-compose exec --user=laradock workspace bash
     ```
 
-4. From `/var/www/` on you container, install Yii via composer
+4. From `/var/www/` on your container, install Yii via composer
 
     ```
         composer create-project --prefer-dist yiisoft/yii2-app-basic yourprojectname
