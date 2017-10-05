@@ -1,4 +1,5 @@
-# Yii2 Laradock
+# Update : Please watch this video [https://www.youtube.com/watch?v=l_W-GRSlJ0U](https://www.youtube.com/watch?v=l_W-GRSlJ0U)
+# Yii2 Laradock (Deprecated)
 Yii2 Laradock is a Docker PHP development environment base on [Laradock](https://github.com/LaraDock/laradock).
 To fullfill the requirements of Yii2, we need to make some modifications to php-fpm and workspace containers.
 By using this project, you can easily install and run Yii2 Framework from a Docker Container.
