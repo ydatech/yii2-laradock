@@ -1,5 +1,5 @@
 # Update : Please watch this video [https://www.youtube.com/watch?v=l_W-GRSlJ0U](https://www.youtube.com/watch?v=l_W-GRSlJ0U)
-I recommend you to use the original [Laradock](https://github.com/LaraDock/laradock), you can watch my video tutorial above for Yii2 Framework installation guide on laradock environment.
+I recommend you to use the original [Laradock](https://github.com/LaraDock/laradock), you can watch my video tutorial for Yii2 Framework installation guide on laradock environment.
 # Yii2 Laradock (Deprecated)
 Yii2 Laradock is a Docker PHP development environment base on [Laradock](https://github.com/LaraDock/laradock).
 To fullfill the requirements of Yii2, we need to make some modifications to php-fpm and workspace containers.
