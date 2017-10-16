@@ -63,11 +63,11 @@ ARG INSTALL_SOAP=false
 ENV INSTALL_SOAP ${INSTALL_SOAP}
 
 RUN if [ ${INSTALL_SOAP} = true ]; then \
-  # Install the PHP SOAP extension
-  add-apt-repository -y ppa:ondrej/php && \
-  apt-get update -yqq && \
-  apt-get -y install libxml2-dev php7.1-soap \
-;fi
+    # Install the PHP SOAP extension
+    add-apt-repository -y ppa:ondrej/php && \
+    apt-get update -yqq && \
+    apt-get -y install libxml2-dev php7.1-soap \
+    ;fi
 
 #####################################
 # LDAP:
@@ -80,7 +80,7 @@ RUN if [ ${INSTALL_LDAP} = true ]; then \
     apt-get update -yqq && \
     apt-get install -y libldap2-dev && \
     apt-get install -y php7.1-ldap \
-;fi
+    ;fi
 
 #####################################
 # Set Timezone
@@ -107,7 +107,7 @@ ENV COMPOSER_GLOBAL_INSTALL ${COMPOSER_GLOBAL_INSTALL}
 RUN if [ ${COMPOSER_GLOBAL_INSTALL} = true ]; then \
     # run the install
     composer global install \
-;fi
+    ;fi
 
 #####################################
 # Crontab
@@ -126,17 +126,17 @@ COPY ./aliases.sh /home/laradock/aliases.sh
 RUN echo "" >> ~/.bashrc && \
     echo "# Load Custom Aliases" >> ~/.bashrc && \
     echo "source /home/laradock/aliases.sh" >> ~/.bashrc && \
-	echo "" >> ~/.bashrc && \
-	sed -i 's/\r//' /home/laradock/aliases.sh && \
-	sed -i 's/^#! \/bin\/sh/#! \/bin\/bash/' /home/laradock/aliases.sh
+    echo "" >> ~/.bashrc && \
+    sed -i 's/\r//' /home/laradock/aliases.sh && \
+    sed -i 's/^#! \/bin\/sh/#! \/bin\/bash/' /home/laradock/aliases.sh
 
 USER root
 RUN echo "" >> ~/.bashrc && \
     echo "# Load Custom Aliases" >> ~/.bashrc && \
     echo "source /home/laradock/aliases.sh" >> ~/.bashrc && \
-	echo "" >> ~/.bashrc && \
-	sed -i 's/\r//' /home/laradock/aliases.sh && \
-	sed -i 's/^#! \/bin\/sh/#! \/bin\/bash/' /home/laradock/aliases.sh
+    echo "" >> ~/.bashrc && \
+    sed -i 's/\r//' /home/laradock/aliases.sh && \
+    sed -i 's/^#! \/bin\/sh/#! \/bin\/bash/' /home/laradock/aliases.sh
 
 #####################################
 # xDebug:
@@ -149,7 +149,7 @@ RUN if [ ${INSTALL_XDEBUG} = true ]; then \
     apt-get install -y --force-yes php7.1-xdebug && \
     sed -i 's/^;//g' /etc/php/7.1/cli/conf.d/20-xdebug.ini && \
     echo "alias phpunit='php -dzend_extension=xdebug.so /var/www/vendor/bin/phpunit'" >> ~/.bashrc \
-;fi
+    ;fi
 # ADD for REMOTE debugging
 COPY ./xdebug.ini /etc/php/7.1/cli/conf.d/xdebug.ini
 
@@ -169,7 +169,7 @@ RUN if [ ${INSTALL_XDEBUG} = false -a ${INSTALL_BLACKFIRE} = true ]; then \
     echo "deb http://packages.blackfire.io/debian any main" | tee /etc/apt/sources.list.d/blackfire.list && \
     apt-get update -yqq && \
     apt-get install blackfire-agent \
-;fi
+    ;fi
 
 #####################################
 # ssh:
@@ -183,12 +183,12 @@ ADD insecure_id_rsa.pub /tmp/id_rsa.pub
 RUN if [ ${INSTALL_WORKSPACE_SSH} = true ]; then \
     rm -f /etc/service/sshd/down && \
     cat /tmp/id_rsa.pub >> /root/.ssh/authorized_keys \
-        && cat /tmp/id_rsa.pub >> /root/.ssh/id_rsa.pub \
-        && cat /tmp/id_rsa >> /root/.ssh/id_rsa \
-        && rm -f /tmp/id_rsa* \
-        && chmod 644 /root/.ssh/authorized_keys /root/.ssh/id_rsa.pub \
+    && cat /tmp/id_rsa.pub >> /root/.ssh/id_rsa.pub \
+    && cat /tmp/id_rsa >> /root/.ssh/id_rsa \
+    && rm -f /tmp/id_rsa* \
+    && chmod 644 /root/.ssh/authorized_keys /root/.ssh/id_rsa.pub \
     && chmod 400 /root/.ssh/id_rsa \
-;fi
+    ;fi
 
 #####################################
 # MongoDB:
@@ -202,7 +202,7 @@ RUN if [ ${INSTALL_MONGO} = true ]; then \
     pecl -q install mongodb && \
     echo "extension=mongodb.so" >> /etc/php/7.1/mods-available/mongodb.ini && \
     ln -s /etc/php/7.1/mods-available/mongodb.ini /etc/php/7.1/cli/conf.d/30-mongodb.ini \
-;fi
+    ;fi
 
 #####################################
 # PHP REDIS EXTENSION FOR PHP 7.1
@@ -215,7 +215,7 @@ RUN if [ ${INSTALL_PHPREDIS} = true ]; then \
     printf "\n" | pecl -q install -o -f redis && \
     echo "extension=redis.so" >> /etc/php/7.1/mods-available/redis.ini && \
     phpenmod redis \
-;fi
+    ;fi
 
 #####################################
 # Drush:
@@ -231,7 +231,7 @@ RUN if [ ${INSTALL_DRUSH} = true ]; then \
     curl -fsSL -o /usr/local/bin/drush https://github.com/drush-ops/drush/releases/download/$DRUSH_VERSION/drush.phar | bash && \
     chmod +x /usr/local/bin/drush && \
     drush core-status \
-;fi
+    ;fi
 
 #####################################
 # Drupal Console:
@@ -245,7 +245,7 @@ RUN if [ ${INSTALL_DRUPAL_CONSOLE} = true ]; then \
     curl https://drupalconsole.com/installer -L -o drupal.phar && \
     mv drupal.phar /usr/local/bin/drupal && \
     chmod +x /usr/local/bin/drupal \
-;fi
+    ;fi
 
 USER laradock
 
@@ -262,12 +262,12 @@ ENV NVM_DIR /home/laradock/.nvm
 RUN if [ ${INSTALL_NODE} = true ]; then \
     # Install nvm (A Node Version Manager)
     curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash && \
-        . $NVM_DIR/nvm.sh && \
-        nvm install ${NODE_VERSION} && \
-        nvm use ${NODE_VERSION} && \
-        nvm alias ${NODE_VERSION} && \
-        npm install -g gulp bower vue-cli \
-;fi
+    . $NVM_DIR/nvm.sh && \
+    nvm install ${NODE_VERSION} && \
+    nvm use ${NODE_VERSION} && \
+    nvm alias ${NODE_VERSION} && \
+    npm install -g gulp bower vue-cli \
+    ;fi
 
 # Wouldn't execute when added to the RUN statement in the above block
 # Source NVM when loading bash since ~/.profile isn't loaded on non-login shell
@@ -275,7 +275,7 @@ RUN if [ ${INSTALL_NODE} = true ]; then \
     echo "" >> ~/.bashrc && \
     echo 'export NVM_DIR="$HOME/.nvm"' >> ~/.bashrc && \
     echo '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm' >> ~/.bashrc \
-;fi
+    ;fi
 
 # Add NVM binaries to root's .bashrc
 USER root
@@ -284,7 +284,7 @@ RUN if [ ${INSTALL_NODE} = true ]; then \
     echo "" >> ~/.bashrc && \
     echo 'export NVM_DIR="/home/laradock/.nvm"' >> ~/.bashrc && \
     echo '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm' >> ~/.bashrc \
-;fi
+    ;fi
 
 # Add PATH for node
 ENV PATH $PATH:$NVM_DIR/versions/node/v${NODE_VERSION}/bin
@@ -304,13 +304,13 @@ ENV YARN_VERSION ${YARN_VERSION}
 RUN if [ ${INSTALL_YARN} = true ]; then \
     [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" && \
     if [ ${YARN_VERSION} = "latest" ]; then \
-        curl -o- -L https://yarnpkg.com/install.sh | bash; \
+    curl -o- -L https://yarnpkg.com/install.sh | bash; \
     else \
-        curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version ${YARN_VERSION}; \
+    curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version ${YARN_VERSION}; \
     fi && \
     echo "" >> ~/.bashrc && \
     echo 'export PATH="$HOME/.yarn/bin:$PATH"' >> ~/.bashrc \
-;fi
+    ;fi
 
 # Add YARN binaries to root's .bashrc
 USER root
@@ -319,7 +319,7 @@ RUN if [ ${INSTALL_YARN} = true ]; then \
     echo "" >> ~/.bashrc && \
     echo 'export YARN_DIR="/home/laradock/.yarn"' >> ~/.bashrc && \
     echo 'export PATH="$YARN_DIR/bin:$PATH"' >> ~/.bashrc \
-;fi
+    ;fi
 
 #####################################
 # PHP Aerospike:
@@ -342,17 +342,17 @@ RUN if [ ${INSTALL_AEROSPIKE} = true ]; then \
     && mkdir -p aerospike-client-php \
     && tar -C aerospike-client-php -zxvf /tmp/aerospike-client-php.tar.gz --strip 1 \
     && ( \
-        cd aerospike-client-php/src \
-        && phpize \
-        && ./build.sh \
-        && make install \
+    cd aerospike-client-php/src \
+    && phpize \
+    && ./build.sh \
+    && make install \
     ) \
     && rm /tmp/aerospike-client-php.tar.gz \
-;fi
+    ;fi
 
 RUN if [ ${INSTALL_AEROSPIKE} = false ]; then \
     rm /etc/php/7.1/cli/conf.d/aerospike.ini \
-;fi
+    ;fi
 
 #####################################
 # PHP V8JS:
@@ -369,7 +369,7 @@ RUN if [ ${INSTALL_V8JS} = true ]; then \
     && apt-get install -y php-xml php-dev php-pear libv8-5.4 \
     && pecl install v8js \
     && echo "extension=v8js.so" >> /etc/php/7.1/cli/php.ini \
-;fi
+    ;fi
 
 #####################################
 # Non-root user : PHPUnit path
@@ -392,7 +392,7 @@ ENV INSTALL_LARAVEL_ENVOY ${INSTALL_LARAVEL_ENVOY}
 RUN if [ ${INSTALL_LARAVEL_ENVOY} = true ]; then \
     # Install the Laravel Envoy
     composer global require "laravel/envoy=~1.0" \
-;fi
+    ;fi
 
 #####################################
 # Laravel Installer:
@@ -404,10 +404,10 @@ ENV INSTALL_LARAVEL_INSTALLER ${INSTALL_LARAVEL_INSTALLER}
 
 RUN if [ ${INSTALL_LARAVEL_INSTALLER} = true ]; then \
     # Install the Laravel Installer
-	echo "" >> ~/.bashrc && \
-	echo 'export PATH="~/.composer/vendor/bin:$PATH"' >> ~/.bashrc \
-	&& composer global require "laravel/installer" \
-;fi
+    echo "" >> ~/.bashrc && \
+    echo 'export PATH="~/.composer/vendor/bin:$PATH"' >> ~/.bashrc \
+    && composer global require "laravel/installer" \
+    ;fi
 
 USER laradock
 
@@ -422,7 +422,7 @@ ENV INSTALL_DEPLOYER ${INSTALL_DEPLOYER}
 RUN if [ ${INSTALL_DEPLOYER} = true ]; then \
     # Install the Deployer
     composer global require "deployer/deployer" \
-;fi
+    ;fi
 
 #####################################
 # Linuxbrew:
@@ -437,10 +437,10 @@ RUN if [ ${INSTALL_LINUXBREW} = true ]; then \
     # Preparation
     apt-get upgrade -y && \
     apt-get install -y build-essential make cmake scons curl git \
-      ruby autoconf automake autoconf-archive \
-      gettext libtool flex bison \
-      libbz2-dev libcurl4-openssl-dev \
-      libexpat-dev libncurses-dev && \
+    ruby autoconf automake autoconf-archive \
+    gettext libtool flex bison \
+    libbz2-dev libcurl4-openssl-dev \
+    libexpat-dev libncurses-dev && \
 
     # Install the Linuxbrew
     git clone --depth=1 https://github.com/Homebrew/linuxbrew.git ~/.linuxbrew && \
@@ -454,7 +454,7 @@ RUN if [ ${INSTALL_LINUXBREW} = true ]; then \
     echo 'export MANPATH="$LINUXBREWHOME/man:$MANPATH"' >> ~/.bashrc && \
     echo 'export PKG_CONFIG_PATH="$LINUXBREWHOME/lib64/pkgconfig:$LINUXBREWHOME/lib/pkgconfig:$PKG_CONFIG_PATH"' >> ~/.bashrc && \
     echo 'export LD_LIBRARY_PATH="$LINUXBREWHOME/lib64:$LINUXBREWHOME/lib:$LD_LIBRARY_PATH"' >> ~/.bashrc \
-;fi
+    ;fi
 
 #####################################
 # SQL SERVER:
@@ -466,9 +466,9 @@ RUN if [ ${INSTALL_MSSQL} = true ]; then \
     #####################################
     # Install Depenencies:
     #####################################
-        cd / && \
-        apt-get update -yqq && \
-        apt-get install -y --force-yes wget apt-transport-https curl freetds-common libsybdb5 freetds-bin unixodbc unixodbc-dev && \
+    cd / && \
+    apt-get update -yqq && \
+    apt-get install -y --force-yes wget apt-transport-https curl freetds-common libsybdb5 freetds-bin unixodbc unixodbc-dev && \
 
     #####################################
     #  The following steps were taken from
@@ -479,41 +479,41 @@ RUN if [ ${INSTALL_MSSQL} = true ]; then \
     # Add PHP 7 repository
     # for Debian jessie
     # And System upgrade
-        cd / && \
-        echo "deb http://packages.dotdeb.org jessie all" \
-        | tee /etc/apt/sources.list.d/dotdeb.list \
-        && wget -qO- https://www.dotdeb.org/dotdeb.gpg \
-        | apt-key add - \
-        && apt-get update -yqq \
-        && apt-get upgrade -qq && \
+    cd / && \
+    echo "deb http://packages.dotdeb.org jessie all" \
+    | tee /etc/apt/sources.list.d/dotdeb.list \
+    && wget -qO- https://www.dotdeb.org/dotdeb.gpg \
+    | apt-key add - \
+    && apt-get update -yqq \
+    && apt-get upgrade -qq && \
 
     # Install UnixODBC
     # Compile odbc_config as it is not part of unixodbc package
-        cd / && \
-        apt-get update -yqq && \
-        apt-get install -y whiptail \
-        unixodbc libgss3 odbcinst devscripts debhelper dh-exec dh-autoreconf libreadline-dev libltdl-dev \
-        && dget -u -x http://http.debian.net/debian/pool/main/u/unixodbc/unixodbc_2.3.1-3.dsc \
-        && cd unixodbc-*/ \
-        && ./configure && make && make install \
-        && cp -v ./exe/odbc_config /usr/local/bin/ && \
+    cd / && \
+    apt-get update -yqq && \
+    apt-get install -y whiptail \
+    unixodbc libgss3 odbcinst devscripts debhelper dh-exec dh-autoreconf libreadline-dev libltdl-dev \
+    && dget -u -x http://http.debian.net/debian/pool/main/u/unixodbc/unixodbc_2.3.1-3.dsc \
+    && cd unixodbc-*/ \
+    && ./configure && make && make install \
+    && cp -v ./exe/odbc_config /usr/local/bin/ && \
 
     # Fake uname for install.sh
-        printf '#!/bin/bash\nif [ "$*" == "-p" ]; then echo "x86_64"; else /bin/uname "$@"; fi' \
-        | tee /usr/local/bin/uname \
-        && chmod +x /usr/local/bin/uname && \
+    printf '#!/bin/bash\nif [ "$*" == "-p" ]; then echo "x86_64"; else /bin/uname "$@"; fi' \
+    | tee /usr/local/bin/uname \
+    && chmod +x /usr/local/bin/uname && \
 
     # Microsoft ODBC Driver 13 for Linux
     # Note: There's a copy of this tar on my hubiC
-        cd / && \
-        wget -nv -O msodbcsql-13.0.0.0.tar.gz \
-        "https://meetsstorenew.blob.core.windows.net/contianerhd/Ubuntu%2013.0%20Tar/msodbcsql-13.0.0.0.tar.gz?st=2016-10-18T17%3A29%3A00Z&se=2022-10-19T17%3A29%3A00Z&sp=rl&sv=2015-04-05&sr=b&sig=cDwPfrouVeIQf0vi%2BnKt%2BzX8Z8caIYvRCmicDL5oknY%3D" \
-        && tar -xf msodbcsql-13.0.0.0.tar.gz \
-        && cd msodbcsql-*/ \
-        && ldd lib64/libmsodbcsql-13.0.so.0.0 \
-        && ./install.sh install --accept-license \
-        && ls -l /opt/microsoft/msodbcsql/ \
-        && odbcinst -q -d -n "ODBC Driver 13 for SQL Server" && \
+    cd / && \
+    wget -nv -O msodbcsql-13.0.0.0.tar.gz \
+    "https://meetsstorenew.blob.core.windows.net/contianerhd/Ubuntu%2013.0%20Tar/msodbcsql-13.0.0.0.tar.gz?st=2016-10-18T17%3A29%3A00Z&se=2022-10-19T17%3A29%3A00Z&sp=rl&sv=2015-04-05&sr=b&sig=cDwPfrouVeIQf0vi%2BnKt%2BzX8Z8caIYvRCmicDL5oknY%3D" \
+    && tar -xf msodbcsql-13.0.0.0.tar.gz \
+    && cd msodbcsql-*/ \
+    && ldd lib64/libmsodbcsql-13.0.so.0.0 \
+    && ./install.sh install --accept-license \
+    && ls -l /opt/microsoft/msodbcsql/ \
+    && odbcinst -q -d -n "ODBC Driver 13 for SQL Server" && \
 
 
     #####################################
@@ -533,7 +533,7 @@ RUN if [ ${INSTALL_MSSQL} = true ]; then \
     && locale-gen \
     && echo "extension=sqlsrv.so" > /etc/php/7.1/cli/conf.d/20-sqlsrv.ini \
     && echo "extension=pdo_sqlsrv.so" > /etc/php/7.1/cli/conf.d/20-pdo_sqlsrv.ini \
-;fi
+    ;fi
 
 #####################################
 # Minio:
@@ -547,7 +547,7 @@ COPY mc/config.json /root/.mc/config.json
 RUN if [ ${INSTALL_MC} = true ]; then\
     curl -fsSL -o /usr/local/bin/mc https://dl.minio.io/client/mc/release/linux-amd64/mc && \
     chmod +x /usr/local/bin/mc \
-;fi
+    ;fi
 
 #####################################
 # Image optimizers:
@@ -558,9 +558,9 @@ ENV INSTALL_IMAGE_OPTIMIZERS ${INSTALL_IMAGE_OPTIMIZERS}
 RUN if [ ${INSTALL_IMAGE_OPTIMIZERS} = true ]; then \
     apt-get install -y --force-yes jpegoptim optipng pngquant gifsicle && \
     if [ ${INSTALL_NODE} = true ]; then \
-        . ~/.bashrc && npm install -g svgo \
+    . ~/.bashrc && npm install -g svgo \
     ;fi\
-;fi
+    ;fi
 
 USER laradock
 
@@ -572,19 +572,19 @@ ARG INSTALL_SYMFONY=false
 ENV INSTALL_SYMFONY ${INSTALL_SYMFONY}
 RUN if [ ${INSTALL_SYMFONY} = true ]; then \
 
-  mkdir -p /usr/local/bin \
-  && curl -LsS https://symfony.com/installer -o /usr/local/bin/symfony \
-  && chmod a+x /usr/local/bin/symfony \
+    mkdir -p /usr/local/bin \
+    && curl -LsS https://symfony.com/installer -o /usr/local/bin/symfony \
+    && chmod a+x /usr/local/bin/symfony \
 
-  #  Symfony 3 alias
-  && echo 'alias dev="php bin/console -e=dev"' >> ~/.bashrc \
-  && echo 'alias prod="php bin/console -e=prod"' >> ~/.bashrc \
+    #  Symfony 3 alias
+    && echo 'alias dev="php bin/console -e=dev"' >> ~/.bashrc \
+    && echo 'alias prod="php bin/console -e=prod"' >> ~/.bashrc \
 
-  #  Symfony 2 alias
-  #  && echo 'alias dev="php app/console -e=dev"' >> ~/.bashrc \
-  #  && echo 'alias prod="php app/console -e=prod"' >> ~/.bashrc \
+    #  Symfony 2 alias
+    #  && echo 'alias dev="php app/console -e=dev"' >> ~/.bashrc \
+    #  && echo 'alias prod="php app/console -e=prod"' >> ~/.bashrc \
 
-;fi
+    ;fi
 
 #####################################
 # PYTHON:
@@ -593,11 +593,11 @@ RUN if [ ${INSTALL_SYMFONY} = true ]; then \
 ARG INSTALL_PYTHON=false
 ENV INSTALL_PYTHON ${INSTALL_PYTHON}
 RUN if [ ${INSTALL_PYTHON} = true ]; then \
-  apt-get update \
-  && apt-get -y install python python-pip python-dev build-essential  \
-  && pip install --upgrade pip  \
-  && pip install --upgrade virtualenv \
-;fi
+    apt-get update \
+    && apt-get -y install python python-pip python-dev build-essential  \
+    && pip install --upgrade pip  \
+    && pip install --upgrade virtualenv \
+    ;fi
 
 #####################################
 # ImageMagick:
@@ -607,7 +607,7 @@ ARG INSTALL_IMAGEMAGICK=false
 ENV INSTALL_IMAGEMAGICK ${INSTALL_IMAGEMAGICK}
 RUN if [ ${INSTALL_IMAGEMAGICK} = true ]; then \
     apt-get install -y --force-yes imagemagick php-imagick \
-;fi
+    ;fi
 
 #####################################
 # Terraform:
@@ -622,7 +622,7 @@ RUN if [ ${INSTALL_TERRAFORM} = true ]; then \
     && unzip terraform_0.10.6_linux_amd64.zip \
     && mv terraform /usr/local/bin \
     && rm terraform_0.10.6_linux_amd64.zip \
-;fi
+    ;fi
 
 #####################################
 # Dusk Dependencies:
@@ -633,22 +633,35 @@ ENV CHROME_DRIVER_VERSION ${CHROME_DRIVER_VERSION}
 ARG INSTALL_DUSK_DEPS=false
 ENV INSTALL_DUSK_DEPS ${INSTALL_DUSK_DEPS}
 RUN if [ ${INSTALL_DUSK_DEPS} = true ]; then \
-  add-apt-repository ppa:ondrej/php \
-  && apt-get update \
-  && apt-get -y install zip wget unzip xdg-utils \
+    add-apt-repository ppa:ondrej/php \
+    && apt-get update \
+    && apt-get -y install zip wget unzip xdg-utils \
     libxpm4 libxrender1 libgtk2.0-0 libnss3 libgconf-2-4 xvfb \
     gtk2-engines-pixbuf xfonts-cyrillic xfonts-100dpi xfonts-75dpi \
     xfonts-base xfonts-scalable x11-apps \
-  && wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
-  && dpkg -i --force-depends google-chrome-stable_current_amd64.deb \
-  && apt-get -y -f install \
-  && dpkg -i --force-depends google-chrome-stable_current_amd64.deb \
-  && rm google-chrome-stable_current_amd64.deb \
-  && wget https://chromedriver.storage.googleapis.com/${CHROME_DRIVER_VERSION}/chromedriver_linux64.zip \
-  && unzip chromedriver_linux64.zip \
-  && mv chromedriver /usr/local/bin/ \
-  && rm chromedriver_linux64.zip \
-;fi
+    && wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
+    && dpkg -i --force-depends google-chrome-stable_current_amd64.deb \
+    && apt-get -y -f install \
+    && dpkg -i --force-depends google-chrome-stable_current_amd64.deb \
+    && rm google-chrome-stable_current_amd64.deb \
+    && wget https://chromedriver.storage.googleapis.com/${CHROME_DRIVER_VERSION}/chromedriver_linux64.zip \
+    && unzip chromedriver_linux64.zip \
+    && mv chromedriver /usr/local/bin/ \
+    && rm chromedriver_linux64.zip \
+    ;fi
+
+#####################################
+# Human Language and Character Encoding Support:
+#####################################
+USER root
+ARG INSTALL_INTL=false
+ENV INSTALL_INTL ${INSTALL_INTL}
+RUN if [ ${INSTALL_INTL} = true ]; then \
+    # Install intl and requirements
+    apt-get update -yqq && \
+    apt-get install -y zlib1g-dev libicu-dev g++ && \
+    apt-get install -y php7.1-intl \
+    ;fi
 
 #
 #--------------------------------------------------------------------------
