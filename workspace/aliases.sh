@@ -100,6 +100,13 @@ alias git-revert="git reset --hard && git clean -df"
 alias gs="git status"
 alias whoops="git reset --hard && git clean -df"
 
+#yii2 aliases
+alias yii="php yii"
+alias yii_test="php ./tests/bin/yii"
+
+#codeception
+alias codecept="./vendor/bin/codecept"
+
 # Create a new directory and enter it
 function mkd() {
     mkdir -p "$@" && cd "$@"
