@@ -49,6 +49,7 @@ services:
           - TZ=${WORKSPACE_TIMEZONE}
           - BLACKFIRE_CLIENT_ID=${BLACKFIRE_CLIENT_ID}
           - BLACKFIRE_CLIENT_TOKEN=${BLACKFIRE_CLIENT_TOKEN}
+          - INSTALL_INTL=${WORKSPACE_INSTALL_INTL}
         dockerfile: "Dockerfile-${PHP_VERSION}"
       volumes_from:
         - applications
