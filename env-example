@@ -30,6 +30,7 @@ PHP_INTERPRETER=php-fpm
 ### WORKSPACE ##########################################################################################################
 
 WORKSPACE_INSTALL_XDEBUG=false
+WORKSPACE_INSTALL_LDAP=false
 WORKSPACE_INSTALL_SOAP=false
 WORKSPACE_INSTALL_MONGO=false
 WORKSPACE_INSTALL_PHPREDIS=false
@@ -51,8 +52,11 @@ WORKSPACE_INSTALL_SYMFONY=false
 WORKSPACE_INSTALL_PYTHON=false
 WORKSPACE_INSTALL_IMAGE_OPTIMIZERS=false
 WORKSPACE_INSTALL_IMAGEMAGICK=false
+WORKSPACE_INSTALL_TERRAFORM=false
+WORKSPACE_INSTALL_DUSK_DEPS=false
 WORKSPACE_PUID=1000
 WORKSPACE_PGID=1000
+WORKSPACE_CHROME_DRIVER_VERSION=2.32
 WORKSPACE_NODE_VERSION=stable
 WORKSPACE_YARN_VERSION=latest
 WORKSPACE_TIMEZONE=UTC
@@ -97,6 +101,7 @@ APACHE_HOST_LOG_PATH=./logs/apache2
 APACHE_SITES_PATH=./apache2/sites
 APACHE_PHP_UPSTREAM_CONTAINER=php-fpm
 APACHE_PHP_UPSTREAM_PORT=9000
+APACHE_PHP_UPSTREAM_TIMEOUT=60
 
 ### MYSQL ##############################################################################################################
 
@@ -199,6 +204,11 @@ PMA_USER=default
 PMA_PASSWORD=secret
 PMA_ROOT_PASSWORD=secret
 PMA_PORT=8080
+
+### MAILDEV ############################################################################################################
+
+MAILDEV_HTTP_PORT=1080
+MAILDEV_SMTP_PORT=25
 
 ### VARNISH ############################################################################################################
 
