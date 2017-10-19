@@ -28,6 +28,9 @@
 	</a>
 </p>
 
+## Installing Yii2 Framework
+<a href="https://github.com/ydatech/yii2-laradock/wiki/How-To-Install-Yii2-Framework-Basic-Template-on-Laradock">How To Install Yii2 Framework Basic Template on Laradock</a>
+
 
 ## Credits
 
