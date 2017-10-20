@@ -4,3 +4,4 @@
 .env
 /.project
 .docker-sync
+*-docker-compose.yml
