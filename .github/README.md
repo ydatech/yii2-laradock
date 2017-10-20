@@ -29,6 +29,16 @@
 </p>
 
 
+
+## Installing Yii2 Framework
+<p align="center">
+    <a href="https://github.com/yiisoft" target="_blank">
+        <img src="https://avatars0.githubusercontent.com/u/993323" height="100px">
+    </a>
+</p>
+<a href="https://github.com/ydatech/yii2-laradock/wiki/How-To-Install-Yii2-Framework-Basic-Template-on-Laradock">How To Install Yii2 Framework Basic Template on Laradock</a>
+
+
 ## Credits
 
 - [Mahmoud Zalt](https://github.com/Mahmoudz) @mahmoudz | [Twitter](https://twitter.com/Mahmoud_Zalt) | [Site](http://zalt.me)
