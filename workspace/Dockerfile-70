@@ -12,9 +12,12 @@
 # Note: Base Image name format {image-tag}-{php-version}
 #
 
-FROM laradock/workspace:1.8-70
+FROM laradock/workspace:1.9-70
 
 MAINTAINER Mahmoud Zalt <mahmoud@zalt.me>
+
+# Remove Faillog and Lastlog to reduce the size of the final image.
+RUN rm /var/log/lastlog /var/log/faillog
 
 #
 #--------------------------------------------------------------------------
@@ -81,6 +84,18 @@ RUN if [ ${INSTALL_LDAP} = true ]; then \
     apt-get install -y libldap2-dev && \
     apt-get install -y php7.0-ldap \
     ;fi
+
+#####################################
+# IMAP:
+#####################################
+
+ARG INSTALL_IMAP=false
+ENV INSTALL_IMAP ${INSTALL_IMAP}
+
+RUN if [ ${INSTALL_IMAP} = true ]; then \
+    apt-get update -yqq && \
+    apt-get install -y php7.0-imap \
+;fi
 
 #####################################
 # Set Timezone
@@ -617,6 +632,18 @@ RUN if [ ${INSTALL_TERRAFORM} = true ]; then \
     && mv terraform /usr/local/bin \
     && rm terraform_0.10.6_linux_amd64.zip \
     ;fi
+
+#####################################
+# pgsql client
+#####################################
+USER root
+ARG INSTALL_PG_CLIENT=false
+ENV INSTALL_PG_CLIENT ${INSTALL_PG_CLIENT}
+RUN if [ ${INSTALL_PG_CLIENT} = true ]; then \
+    # Install the pgsql client
+    apt-get update -yqq && \
+    apt-get -y install postgresql-client \
+;fi
 
 #####################################
 # Dusk Dependencies:

@@ -12,9 +12,12 @@
 # Note: Base Image name format {image-tag}-{php-version}
 #
 
-FROM laradock/workspace:1.8-56
+FROM laradock/workspace:1.9-56
 
 MAINTAINER Mahmoud Zalt <mahmoud@zalt.me>
+
+# Remove Faillog and Lastlog to reduce the size of the final image.
+RUN rm /var/log/lastlog /var/log/faillog
 
 #
 #--------------------------------------------------------------------------
@@ -68,6 +71,34 @@ RUN if [ ${INSTALL_SOAP} = true ]; then \
     apt-get update -yqq && \
     apt-get -y install libxml2-dev php5.6-soap \
     ;fi
+
+#####################################
+# LDAP:
+#####################################
+
+ARG INSTALL_LDAP=false
+ENV INSTALL_LDAP ${INSTALL_LDAP}
+
+RUN if [ ${INSTALL_LDAP} = true ]; then \
+    apt-get update -yqq && \
+    apt-get install -y libldap2-dev && \
+    apt-get install -y php5.6-ldap \
+;fi
+
+#####################################
+# IMAP:
+#####################################
+USER root
+
+ARG INSTALL_IMAP=false
+ENV INSTALL_IMAP ${INSTALL_IMAP}
+
+RUN if [ ${INSTALL_IMAP} = true ]; then \
+  # Install the PHP IMAP extension
+  add-apt-repository -y ppa:ondrej/php && \
+  apt-get update -yqq && \
+  apt-get -y install php5.6-imap \
+;fi
 
 #####################################
 # Set Timezone
@@ -324,7 +355,7 @@ COPY ./aerospike.ini /etc/php/5.6/cli/conf.d/aerospike.ini
 
 RUN if [ ${INSTALL_AEROSPIKE} = true ]; then \
     # Install the php aerospike extension
-    curl -L -o /tmp/aerospike-client-php.tar.gz "https://github.com/aerospike/aerospike-client-php/archive/3.4.14.tar.gz" \
+    curl -L -o /tmp/aerospike-client-php.tar.gz "https://github.com/aerospike/aerospike-client-php5/archive/3.4.15.tar.gz" \
     && mkdir -p aerospike-client-php \
     && tar -C aerospike-client-php -zxvf /tmp/aerospike-client-php.tar.gz --strip 1 \
     && ( \
@@ -524,6 +555,18 @@ RUN if [ ${INSTALL_TERRAFORM} = true ]; then \
     && mv terraform /usr/local/bin \
     && rm terraform_0.10.6_linux_amd64.zip \
     ;fi
+
+#####################################
+# pgsql client
+#####################################
+USER root
+ARG INSTALL_PG_CLIENT=false
+ENV INSTALL_PG_CLIENT ${INSTALL_PG_CLIENT}
+RUN if [ ${INSTALL_PG_CLIENT} = true ]; then \
+    # Install the pgsql clint
+    apt-get update -yqq && \
+    apt-get -y install postgresql-client \
+;fi
 
 #####################################
 # Dusk Dependencies:

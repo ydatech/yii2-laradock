@@ -541,11 +541,18 @@ b) add a new service container by simply copy-paste this section below PHP-FPM c
 ```yaml
     php-worker:
       build:
-        context: ./php-fpm
-        dockerfile: Dockerfile-70 # or Dockerfile-56, choose your PHP-FPM container setting
+        context: ./php-worker
+        dockerfile: "Dockerfile-${PHP_VERSION}" #Dockerfile-71 or #Dockerfile-70 available
+        args:
+          - INSTALL_PGSQL=${PHP_WORKER_INSTALL_PGSQL} #Optionally install PGSQL PHP drivers
       volumes_from:
         - applications
-      command: php artisan queue:work
+      depends_on:
+        - workspace
+      extra_hosts:
+        - "dockerhost:${DOCKER_HOST_IP}"
+      networks:
+        - backend
 ```
 2 - Start everything up
 
@@ -567,13 +574,15 @@ docker-compose up -d php-worker
 docker-compose up -d redis
 ```
 
+> To execute redis commands, enter the redis container first `docker-compose exec redis bash` then enter the `redis-cli`.
+
 2 - Open your Laravel's `.env` file and set the `REDIS_HOST` to `redis`
 
 ```env
 REDIS_HOST=redis
 ```
 
-If you don't find the `REDIS_HOST` variable in your `.env` file. Go to the database configuration file `config/database.php` and replace the default `127.0.0.1` IP with `redis` for Redis like this:
+If you're using Laravel, and you don't find the `REDIS_HOST` variable in your `.env` file. Go to the database configuration file `config/database.php` and replace the default `127.0.0.1` IP with `redis` for Redis like this:
 
 ```php
 'redis' => [
@@ -813,19 +822,20 @@ docker-compose up -d elasticsearch
 
 2 - Open your browser and visit the localhost on port **9200**:  `http://localhost:9200`
 
+> The default username is `user` and the default password is `changeme`.
 
 ### Install ElasticSearch Plugin
 
-1 - Install the ElasticSearch plugin like [delete-by-query](https://www.elastic.co/guide/en/elasticsearch/plugins/current/plugins-delete-by-query.html).
+1 - Install an ElasticSearch plugin.
 
 ```bash
-docker exec {container-name} /usr/share/elasticsearch/bin/plugin install delete-by-query
+docker-compose exec elasticsearch /usr/share/elasticsearch/bin/plugin install {plugin-name}
 ```
 
 2 - Restart elasticsearch container
 
 ```bash
-docker restart {container-name}
+docker-compose restart elasticsearch
 ```
 
 
