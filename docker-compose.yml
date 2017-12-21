@@ -617,9 +617,9 @@ services:
       networks:
         - frontend
 
-### Balancer Haproxy ##########################################
+### HAProxy Load Balancer ####################################
 
-    balancer:
+    haproxy:
       build: ./haproxy
       ports:
         - "${HAPROXY_HOST_HTTP_PORT}:8085"

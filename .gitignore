@@ -5,3 +5,4 @@
 /.project
 .docker-sync
 *-docker-compose.yml
+/jenkins/jenkins_home
