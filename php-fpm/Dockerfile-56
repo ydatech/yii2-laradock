@@ -137,6 +137,19 @@ RUN if [ ${INSTALL_MONGO} = true ]; then \
 ;fi
 
 #####################################
+# AMQP:
+#####################################
+
+ARG INSTALL_AMQP=false
+RUN if [ ${INSTALL_AMQP} = true ]; then \
+    apt-get update && \
+    apt-get install librabbitmq-dev -y && \
+    # Install the amqp extension
+    pecl install amqp && \
+    docker-php-ext-enable amqp \
+;fi
+
+#####################################
 # ZipArchive:
 #####################################
 
@@ -154,6 +167,18 @@ ARG INSTALL_BCMATH=false
 RUN if [ ${INSTALL_BCMATH} = true ]; then \
     # Install the bcmath extension
     docker-php-ext-install bcmath \
+;fi
+
+#####################################
+# GMP (GNU Multiple Precision):
+#####################################
+
+ARG INSTALL_GMP=false
+RUN if [ ${INSTALL_GMP} = true ]; then \
+    # Install the GMP extension
+	apt-get update -yqq && \
+	apt-get install -y libgmp-dev && \ 
+    docker-php-ext-install gmp \
 ;fi
 
 #####################################

@@ -206,7 +206,9 @@ RUN if [ ${INSTALL_WORKSPACE_SSH} = true ]; then \
     && rm -f /tmp/id_rsa* \
     && chmod 644 /root/.ssh/authorized_keys /root/.ssh/id_rsa.pub \
     && chmod 400 /root/.ssh/id_rsa \
-    ;fi
+    && cp -rf /root/.ssh /home/laradock \
+    && chown -R laradock:laradock /home/laradock/.ssh \
+;fi
 
 #####################################
 # MongoDB:
@@ -223,6 +225,21 @@ RUN if [ ${INSTALL_MONGO} = true ]; then \
     ;fi
 
 #####################################
+# AMQP:
+#####################################
+
+# Check if Mongo needs to be installed
+ARG INSTALL_AMQP=false
+ENV INSTALL_AMQP ${INSTALL_AMQP}
+RUN if [ ${INSTALL_AMQP} = true ]; then \
+    apt-get install librabbitmq-dev -y && \
+    # Install the mongodb extension
+    pecl -q install amqp && \
+    echo "extension=amqp.so" >> /etc/php/7.0/mods-available/amqp.ini && \
+    ln -s /etc/php/7.0/mods-available/amqp.ini /etc/php/7.0/cli/conf.d/30-amqp.ini \
+;fi
+
+#####################################
 # PHP REDIS EXTENSION FOR PHP 7
 #####################################
 
@@ -234,6 +251,18 @@ RUN if [ ${INSTALL_PHPREDIS} = true ]; then \
     echo "extension=redis.so" >> /etc/php/7.0/mods-available/redis.ini && \
     phpenmod redis \
     ;fi
+
+#####################################
+# Swoole EXTENSION FOR PHP 7
+#####################################
+
+ARG INSTALL_SWOOLE=false
+RUN if [ ${INSTALL_SWOOLE} = true ]; then \
+    # Install Php Swoole Extension
+    pecl -q install swoole && \
+    echo "extension=swoole.so" >> /etc/php/7.0/mods-available/swoole.ini && \
+    ln -s /etc/php/7.0/mods-available/swoole.ini /etc/php/7.0/cli/conf.d/20-swoole.ini \
+;fi
 
 #####################################
 # Drush:
